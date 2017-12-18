@@ -37,6 +37,17 @@ Vagrant.configure(2) do |config|
             rsync__exclude: ".git/", rsync__args: ["--verbose", "--archive", "--delete", "--copy-links"],
             disabled: $rsync_folder_disabled
 
+        if ARGV[0] == "up" || ARGV[0] == "provision" then
+          node.vm.provision :shell do |shell|
+            # It is oloder version than lateset release
+            # Must upgrade rancheros before run rancher
+            shell.inline = "sudo ros os upgrade -f"
+            #shell.inline = "sudo ros os upgrade -f --no-reboot"
+            #shell.inline = "sudo docker run -d --restart=unless-stopped -p 8080:8080 rancher/server"
+            #shell.inline = "sudo reboot"
+          end
+        end
     end
   end
+
 end
